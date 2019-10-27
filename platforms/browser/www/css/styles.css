@@ -1,0 +1,115 @@
+/*
+   statusbar-overlay sets the background color for the overlay. Black text is the default when the statusbar plugin is not added. When the
+   statusbar plugin is added, it also adds default setting to make the content white via:
+
+       <preference name="StatusBarStyle" value="lightcontent"/>
+
+   Setting the background color to black will allow the default light content (white text/icons) to show on it. The statusbar plugin is included
+   in the config.xml file and will be added by the CLI when you build locally.
+
+   See https://github.com/apache/cordova-plugin-statusbar
+*/
+
+.statusbar-overlay {
+    background: #000000;
+}
+
+.login-screen-content
+{
+  background:#000000;
+  background: url("../images/bg.png") no-repeat center center fixed !important;
+  background-size: cover !important;
+  opacity: 0.9;
+}
+
+.list-block .list-block-label {
+    margin: 10px 0 35px;
+    padding: 0 15px;
+    font-size: 14px;
+    color: #000000;
+}
+
+.page {
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: url("../images/bg.png") no-repeat center center fixed !important;
+  background-size: cover !important;
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+}
+
+.marginS {
+
+	margin-top: 75px;
+	margin-bottom: 55px;
+    color: blue;
+}
+
+.margintitle {
+
+  margin-bottom: 55px;
+}
+
+.marginbutton {
+
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.test {
+
+  margin-left: : 20px;
+  margin-right: : 20px;
+}
+
+.marginlogin 
+{
+
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+}
+
+.padding-input
+{
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.margin-box
+{
+
+	margin-right: 10px;
+	margin-left: 10px;
+	color: black;
+}
+
+html, body {
+   height:100%;
+    background-color: transparent;
+}
+
+body, div, table, tr, th, td, thead, tbody, span, p, ul, ol, li, input, textarea, img {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0em;
+    padding: 0em;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1.2rem;
+    background-color: #ccc;
+}
+
+.content-block-inner {
+    background: transparent;
+    padding: 10px 15px;
+    margin-left: 0px;
+    width: 100%;
+    position: relative;
+    color: #000;
+}

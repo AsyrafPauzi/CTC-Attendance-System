@@ -1,0 +1,11 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "CTC Attendance Apps",
+  "short_name": "CTC Attendance Apps",
+  "version": "com.ctc.app",
+  "description": "CTC Attendance Apss for staff CTC",
+  "author": "HSC Global Solution Team",
+  "icons": [],
+  "start_url": "index.html"
+}

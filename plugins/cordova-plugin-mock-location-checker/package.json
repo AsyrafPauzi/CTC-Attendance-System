@@ -1,0 +1,51 @@
+{
+  "_from": "git+https://github.com/diegorribeiro/cordova-plugin-mock-location-checker.git",
+  "_id": "cordova-plugin-mock-location-checker@1.0.0",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/cordova-plugin-mock-location-checker",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "https://github.com/diegorribeiro/cordova-plugin-mock-location-checker.git",
+    "rawSpec": "https://github.com/diegorribeiro/cordova-plugin-mock-location-checker.git",
+    "saveSpec": "git+https://github.com/diegorribeiro/cordova-plugin-mock-location-checker.git",
+    "fetchSpec": "https://github.com/diegorribeiro/cordova-plugin-mock-location-checker.git",
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "git+https://github.com/diegorribeiro/cordova-plugin-mock-location-checker.git#d101d7fd8a31b1dbead9ea156b5a5bf2155175be",
+  "_spec": "https://github.com/diegorribeiro/cordova-plugin-mock-location-checker.git",
+  "_where": "C:\\Users\\acap_\\Desktop\\CTC Project\\Ctc-Apps-latest",
+  "author": {
+    "name": "diegorribeiro"
+  },
+  "bugs": {
+    "url": "https://github.com/diegorribeiro/cordova-plugin-mock-location-checker/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-mock-location-checker",
+    "platforms": "android"
+  },
+  "deprecated": false,
+  "description": "Cordova Mock Location Checker Plugin",
+  "homepage": "https://github.com/diegorribeiro/cordova-plugin-mock-location-checker#readme",
+  "keywords": [
+    "cordova",
+    "mock",
+    "location",
+    "checker",
+    "mock-location"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-mock-location-checker",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diegorribeiro/cordova-plugin-mock-location-checker.git"
+  },
+  "version": "1.0.0"
+}
