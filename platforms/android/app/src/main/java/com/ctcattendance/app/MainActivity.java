@@ -17,7 +17,7 @@
        under the License.
  */
 
-package com.ctc.app;
+package com.ctcattendance.app;
 
 import android.os.Bundle;
 import org.apache.cordova.*;

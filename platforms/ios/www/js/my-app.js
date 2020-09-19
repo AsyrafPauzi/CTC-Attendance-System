@@ -55,10 +55,11 @@ $$(document).on('deviceready', function() {
 
 
 $$('.form-to-json').on('click', function() {
+    $$('.form-to-json').attr("disabled", true);
     var formData = myApp.formToJSON('#my-login');
     $$.ajax({
         type: 'POST',
-        url: 'http://ctc-demo.herokuapp.com/api/v1/authentication/staff',
+        url: 'http://175.136.234.161:3000/api/v1/authentication/staff',
         dataType: 'json',
         data: formData,
         success: function(call) {
@@ -90,6 +91,7 @@ $$('.form-to-json').on('click', function() {
             console.log(data)
 
             function errorlogin() {
+                $$('.form-to-json').removeAttr("disabled");
                 mainView.loadPage("index.html");
             }
 
@@ -124,7 +126,7 @@ myApp.onPageInit('scan', function(page) {
     $$.ajax({
 
         type: 'GET',
-        url: 'https://ctc-demo.herokuapp.com/api/v1/users/' + user_id + '',
+        url: 'http://175.136.234.161:3000/api/v1/users/' + user_id + '',
         dataType: 'json',
         headers: {
             'Access-Control-Allow-Credentials': true,
@@ -178,6 +180,15 @@ myApp.onPageInit('scan', function(page) {
 
     }
 
+    $$('#logout').on('click', function() {
+         $$('.form-to-json').removeAttr("disabled");
+         localStorage.clear();
+         mainView.loadPage("index.html");
+
+        
+        return false;
+    })
+
     $$('#prepare').on('click', function() {
 
         cordova.plugins.barcodeScanner.scan(
@@ -195,7 +206,7 @@ myApp.onPageInit('scan', function(page) {
                         $$.ajax({
 
                             type: 'GET',
-                            url: 'https://ctc-demo.herokuapp.com/api/v1/clockin/qrcode/' + last_part + '',
+                            url: 'http://175.136.234.161:3000/api/v1/clockin/qrcode/' + last_part + '',
                             dataType: 'json',
                             headers: {
                                 'Access-Control-Allow-Credentials': true,
@@ -211,6 +222,19 @@ myApp.onPageInit('scan', function(page) {
                             },
                             error: function(data) {
 
+                                function errscan() {
+
+
+
+                                }
+    
+    
+                                navigator.notification.alert(
+                                    'Error QR Code Please Use The Latest QR Code', // message
+                                    errscan, // callback
+                                    'Error Scan QR Code', // title
+                                    'Close' // buttonName
+                                );
 
                             }
 
@@ -261,16 +285,9 @@ myApp.onPageInit('clockin', function(page) {
 
             var firstname = localStorage.getItem('firstname');
 
+
             $$("#name").html(firstname);
 
-
-            window.plugins.mocklocationchecker.check(successCallback, errorCallback);
-
-
-            function successCallback(result) {
-                console.log(result); // true - enabled, false - disabled
-                
-                if (result[0].info == "mock-false") {
 
                     $$('#capturein').on('click', function() {
 
@@ -301,7 +318,8 @@ myApp.onPageInit('clockin', function(page) {
                                     var user_id = localStorage.getItem('user_id');
 
                                     var offsite = localStorage.getItem('offsite');
-                                    if (offsite == "true") {
+                                    var test_qr = localStorage.getItem('qrcode_id');
+                                    if (test_qr == null) {
                                         var qrcode_id = null;
                                     } else {
                                         var qrcode_id = localStorage.getItem('qrcode_id');
@@ -309,7 +327,7 @@ myApp.onPageInit('clockin', function(page) {
 
                                     $$.ajax({
                                         type: 'POST',
-                                        url: 'https://ctc-demo.herokuapp.com/api/v1/clockin/staff',
+                                        url: 'http://175.136.234.161:3000/api/v1/clockin/staff',
                                         dataType: 'json',
                                         data: {
                                             staff_id: user_id,
@@ -322,6 +340,7 @@ myApp.onPageInit('clockin', function(page) {
                                             function successclockin() {
 
                                                 localStorage.removeItem("user_id");
+                                                localStorage.removeItem("qrcode_id");
                                                 localStorage.removeItem("firstname");
                                                 localStorage.removeItem("lastname");
                                                 localStorage.removeItem("offsite");
@@ -355,6 +374,7 @@ myApp.onPageInit('clockin', function(page) {
                                             function errorclockin() {
 
                                                 localStorage.removeItem("user_id");
+                                                localStorage.removeItem("qrcode_id");
                                                 localStorage.removeItem("firstname");
                                                 localStorage.removeItem("lastname");
                                                 localStorage.removeItem("offsite");
@@ -404,34 +424,6 @@ myApp.onPageInit('clockin', function(page) {
 
                         }
                     });
-                } else {
-                    x = "Mock location detected";
-                document.getElementById("demo").innerHTML = x;
-                    $$('#capturein').on('click', function() {
-
-                            $$(this).attr("disabled", true);
-
-                            function mocklocation() {
-
-
-
-                            }
-
-
-                            navigator.notification.alert(
-                                'Close your fake GPS and try again', // message
-                                mocklocation, // callback
-                                'Mock Location Detected', // title
-                                'Close' // buttonName
-                            );
-                        });
-                    }
-                }
-
-                function errorCallback(error) {
-                    console.log(error);
-                    alert(JSON.stringify(error));
-                }
 
 
 
@@ -473,76 +465,114 @@ myApp.onPageInit('clockin', function(page) {
 
             $$('#captureout').on('click', function() {
 
-                var user_id = localStorage.getItem('user_id');
 
-                var timeout = localStorage.getItem('timeout');
+                var options = {
+                            enableHighAccuracy: true,
+                            timeout: 5000
+                        };
 
-                $$.ajax({
-                    type: 'POST',
-                    url: 'https://ctc-demo.herokuapp.com/api/v1/clockout/staff',
-                    dataType: 'json',
-                    data: {
-                        staff_id: user_id,
-                        time: timeout,
-                    },
-                    success: function(call, status) {
+                        navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
 
-                        function successclockout() {
+                        function onSuccess(position) {
 
-                            localStorage.removeItem("user_id");
-                            localStorage.removeItem("firstname");
-                            localStorage.removeItem("lastname");
-                            localStorage.removeItem("offsite");
-                            localStorage.removeItem("today_clockin");
-                            localStorage.removeItem("LocalData");
-                            localStorage.removeItem("coordinate");
-                            if ("user" in localStorage) {} else {
-                                setTimeout(function() {
-                                    mainView.loadPage("index.html");
-                                }, 3000);
+                            localStorage.setItem('coordinate', position.coords.latitude + "," + position.coords.longitude);
+
+                            $$.getJSON('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + position.coords.latitude + ',' + position.coords.longitude + '&key=AIzaSyAVGxdFJeNFSJNIA-G0gMO_j44x8yz5MHQ', function(datas) {
+
+                                    var user_id = localStorage.getItem('user_id');
+
+                                    var timeoutt = localStorage.getItem('timeout');
+
+                                    $$.ajax({
+                                        type: 'POST',
+                                        url: 'http://175.136.234.161:3000/api/v1/clockout/staff',
+                                        dataType: 'json',
+                                        data: {
+                                            staff_id: user_id,
+                                            time: timeoutt,
+                                            user_location_clockout: datas.results[0].formatted_address,
+                                        },
+                                        success: function(call, status) {
+
+                                            function successclockout() {
+
+                                                localStorage.removeItem("user_id");
+                                                localStorage.removeItem("firstname");
+                                                localStorage.removeItem("lastname");
+                                                localStorage.removeItem("offsite");
+                                                localStorage.removeItem("today_clockin");
+                                                localStorage.removeItem("LocalData");
+                                                localStorage.removeItem("coordinate");
+                                                if ("user" in localStorage) {} else {
+                                                    setTimeout(function() {
+                                                        mainView.loadPage("index.html");
+                                                    }, 3000);
+
+                                                }
+
+                                            }
+
+
+                                            navigator.notification.alert(
+                                                'Succesfull Clockout, Will Redirect To Login Page In 3 Second', // message
+                                                successclockout, // callback
+                                                'Success Clockout', // title
+                                                'Close' // buttonName
+                                            );
+
+                                        },
+                                        error: function(call, status) {
+
+                                            function errorclockout() {
+
+                                                localStorage.removeItem("user_id");
+                                                localStorage.removeItem("firstname");
+                                                localStorage.removeItem("lastname");
+                                                localStorage.removeItem("offsite");
+                                                localStorage.removeItem("today_clockin");
+                                                localStorage.removeItem("LocalData");
+                                                localStorage.removeItem("coordinate");
+                                                if ("user" in localStorage) {} else {
+                                                    setTimeout(function() {
+                                                        mainView.loadPage("index.html");
+                                                    }, 3000);
+
+                                                }
+
+                                            }
+
+
+                                            navigator.notification.alert(
+                                                'You already Clockout today, Will Redirect To Login Page In 3 Second', // message
+                                                errorclockout, // callback
+                                                'Error Clockout', // title
+                                                'Close' // buttonName
+                                            );
+                                        }
+                                    });
+                            });
+
+                        }
+
+                        function onError(error) {
+
+                            function errorgps() {
+
+
 
                             }
+
+
+                            navigator.notification.alert(
+                                'Please Turn On Your GPS/Location', // message
+                                errorgps, // callback
+                                'Error Clockin', // title
+                                'Close' // buttonName
+                            );
 
                         }
 
 
-                        navigator.notification.alert(
-                            'Succesfull Clockout, Will Redirect To Login Page In 3 Second', // message
-                            successclockout, // callback
-                            'Success Clockout', // title
-                            'Close' // buttonName
-                        );
-
-                    },
-                    error: function(call, status) {
-
-                        function errorclockout() {
-
-                            localStorage.removeItem("user_id");
-                            localStorage.removeItem("firstname");
-                            localStorage.removeItem("lastname");
-                            localStorage.removeItem("offsite");
-                            localStorage.removeItem("today_clockin");
-                            localStorage.removeItem("LocalData");
-                            localStorage.removeItem("coordinate");
-                            if ("user" in localStorage) {} else {
-                                setTimeout(function() {
-                                    mainView.loadPage("index.html");
-                                }, 3000);
-
-                            }
-
-                        }
-
-
-                        navigator.notification.alert(
-                            'You already Clockout today, Will Redirect To Login Page In 3 Second', // message
-                            errorclockout, // callback
-                            'Error Clockout', // title
-                            'Close' // buttonName
-                        );
-                    }
-                });
             });
 
             startTime();
